@@ -16,18 +16,39 @@ NAME = fdf
 # Compilador e flags
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
-INCLUDES = -I. -I./minilibx-linux
+INCLUDES = -I./src -I./minilibx-linux
 
 # Diretórios
 MLX_DIR = ./minilibx-linux
-SRC_DIR = .
+SRC_DIR = src
 OBJ_DIR = obj
 
-# Arquivos fonte
-SRCS = main.c
+# Arquivos fonte organizados por pasta
+SRCS = src/main.c \
+       src/draw_line_optimized.c \
+       src/free_points.c \
+       src/parser/count_char.c \
+       src/parser/count_tokens.c \
+       src/parser/read_file_to_string.c \
+       src/parser/try_parse.c \
+       src/quaternions/quat_conjugate.c \
+       src/quaternions/quat_from_axis_angle.c \
+       src/quaternions/quat_identity.c \
+       src/quaternions/quat_multiply.c \
+       src/quaternions/quat_normalize.c \
+       src/quaternions/quat_rotate_point.c \
+       src/quaternions/quat_to_axes.c \
+       src/rendering/put_pixel.c \
+       src/rendering/draw_line.c \
+       src/rendering/render.c \
+       src/projection/project_iso.c \
+       src/events/handle_keypress.c \
+       src/events/handle_keyrelease.c \
+       src/events/close_window.c \
+       src/events/update_and_render.c
 
 # Arquivos objeto
-OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
+OBJS = $(SRCS:src/%.c=$(OBJ_DIR)/%.o)
 
 # Biblioteca MiniLibX
 MLX = $(MLX_DIR)/libmlx.a
@@ -39,32 +60,36 @@ RED = \033[0;31m
 RESET = \033[0m
 
 # Regra principal
-all: $(MLX) $(NAME)
+all: $(NAME)
 
 # Compilar o executável
-$(NAME): $(OBJS) $(MLX)
+$(NAME): $(OBJS)
 	@echo "$(GREEN)Compilando $(NAME)...$(RESET)"
 	@$(CC) $(CFLAGS) $(OBJS) $(MLX_FLAGS) -o $(NAME)
 	@echo "$(GREEN)✓ $(NAME) compilado com sucesso!$(RESET)"
 
 # Compilar objetos
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	@mkdir -p $(OBJ_DIR)
+	@mkdir -p $(@D)
 	@echo "$(GREEN)Compilando $<...$(RESET)"
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 # Compilar MiniLibX
 $(MLX):
-	@echo "$(GREEN)Compilando MiniLibX...$(RESET)"
-	@cd $(MLX_DIR) && ./configure > /dev/null 2>&1 || true
-	@make -C $(MLX_DIR) -f Makefile.gen > /dev/null 2>&1 || make -C $(MLX_DIR) all > /dev/null 2>&1
-	@echo "$(GREEN)✓ MiniLibX compilada!$(RESET)"
+	@if [ -f $(MLX_DIR)/Makefile ] || [ -f $(MLX_DIR)/Makefile.gen ]; then \
+		echo "$(GREEN)Compilando MiniLibX...$(RESET)"; \
+		cd $(MLX_DIR) && ./configure > /dev/null 2>&1 || true; \
+		make -C $(MLX_DIR) -f Makefile.gen > /dev/null 2>&1 || make -C $(MLX_DIR) all > /dev/null 2>&1; \
+		echo "$(GREEN)✓ MiniLibX compilada!$(RESET)"; \
+	else \
+		echo "$(RED)Aviso: MiniLibX não encontrada em $(MLX_DIR)$(RESET)"; \
+	fi
 
 # Limpar objetos
 clean:
 	@echo "$(RED)Removendo objetos...$(RESET)"
 	@rm -rf $(OBJ_DIR)
-	@make -C $(MLX_DIR) clean > /dev/null 2>&1
+	@make -C $(MLX_DIR) clean > /dev/null 2>&1 || true
 	@echo "$(RED)✓ Objetos removidos!$(RESET)"
 
 # Limpar tudo
