@@ -63,7 +63,7 @@ RESET = \033[0m
 all: $(NAME)
 
 # Compilar o executável
-$(NAME): $(OBJS)
+$(NAME): $(MLX) $(OBJS)
 	@echo "$(GREEN)Compilando $(NAME)...$(RESET)"
 	@$(CC) $(CFLAGS) $(OBJS) $(MLX_FLAGS) -o $(NAME)
 	@echo "$(GREEN)✓ $(NAME) compilado com sucesso!$(RESET)"
