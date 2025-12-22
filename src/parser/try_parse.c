@@ -1,94 +1,116 @@
 #include "../fdf.h"
-#include <string.h>
 #include <stdlib.h>
 
-int try_parse(t_vars *vars, char *map)
+static int	parse_point(char *token, t_point *point, unsigned int row,
+			unsigned int col)
 {
-    if(!vars || !map)
-        return (0);
+	char		*color_part;
+	int			z;
+	t_color		color;
 
-    unsigned int rows = count_char(map, '\n');
-    if (rows == 0)
-        return (0);
-    
-    vars->point_map.points = malloc((rows + 1) * sizeof(t_point *));
-    if (!vars->point_map.points)
-        return (0);
-    
-    vars->point_map.height = 0;
-    vars->point_map.width = 0;
-    
-    unsigned int row = 0;
-    char *line_ref;
-    char *line = strtok_r(map, "\n", &line_ref);
-    
-    while(line != NULL)
-    {
-        char *temp_line = strdup(line);
-        if (!temp_line)
-        {
-            free_points(vars);
-            return (0);
-        }
-        
-        unsigned int cols = count_tokens(temp_line);
-        free(temp_line);
-        
-        if (cols == 0)  // linha vazia, pula
-        {
-            line = strtok_r(NULL, "\n", &line_ref);
-            continue;
-        }
-        
-        if (vars->point_map.width == 0)
-            vars->point_map.width = cols;
-        else if (vars->point_map.width != cols)
-        {
-            free_points(vars);
-            return (0);
-        }
-        
-        vars->point_map.points[row] = malloc(cols * sizeof(t_point));
-        if (!vars->point_map.points[row])
-        {
-            free_points(vars);
-            return (0);
-        }
-        
-        unsigned int col = 0;
-        char *token_ref;
-        char *token = strtok_r(line, " ", &token_ref);
-        
-        while (token != NULL && col < cols)
-        {
-            char *color_part = strchr(token, ',');
-            int z = atoi(token);
-            
-            t_color color;
-            if (color_part)
-            {
-                color.hex = (unsigned int)strtol(color_part + 1, NULL, 16);
-            }
-            else
-            {
-                color.hex = 0xFFFFFF;
-            }
-            
-            vars->point_map.points[row][col].x = col;
-            vars->point_map.points[row][col].y = row;
-            vars->point_map.points[row][col].z = z;
-            vars->point_map.points[row][col].color = color;
-            
-            token = strtok_r(NULL, " ", &token_ref);
-            col++;
-        }
-        
-        line = strtok_r(NULL, "\n", &line_ref);
-        row++;
-    }
-    
-    vars->point_map.points[row] = NULL;
-    vars->point_map.height = row;
-    
-    return (1);
+	color_part = ft_strchr(token, ',');
+	z = ft_atoi(token);
+	if (color_part)
+		color.hex = ft_atoi_base(color_part + 1, 16);
+	else
+		color.hex = 0xFFFFFF;
+	point->x = col;
+	point->y = row;
+	point->z = z;
+	point->color = color;
+	return (1);
+}
+
+static int	parse_line(char *line, t_point *points, unsigned int row,
+			unsigned int expected_cols)
+{
+	char			**tokens;
+	unsigned int	col;
+	unsigned int	i;
+
+	tokens = ft_split(line, ' ');
+	if (!tokens)
+		return (0);
+	col = 0;
+	while (tokens[col] && col < expected_cols)
+	{
+		if (!parse_point(tokens[col], &points[col], row, col))
+		{
+			i = 0;
+			while (tokens[i])
+				free(tokens[i++]);
+			free(tokens);
+			return (0);
+		}
+		free(tokens[col]);
+		col++;
+	}
+	free(tokens);
+	return (col == expected_cols);
+}
+
+static void	free_lines(char **lines)
+{
+	int	i;
+
+	if (!lines)
+		return ;
+	i = 0;
+	while (lines[i])
+		free(lines[i++]);
+	free(lines);
+}
+
+static int	alloc_and_parse(t_vars *vars, char **lines, unsigned int row)
+{
+	unsigned int	cols;
+
+	cols = count_tokens(lines[row]);
+	if (cols == 0)
+		return (1);
+	if (vars->point_map.width == 0)
+		vars->point_map.width = cols;
+	else if (vars->point_map.width != cols)
+		return (0);
+	vars->point_map.points[vars->point_map.height] = malloc(cols
+			* sizeof(t_point));
+	if (!vars->point_map.points[vars->point_map.height])
+		return (0);
+	if (!parse_line(lines[row], vars->point_map.points[vars->point_map.height],
+			vars->point_map.height, cols))
+		return (0);
+	vars->point_map.height++;
+	return (1);
+}
+
+int	try_parse(t_vars *vars, char *map)
+{
+	char			**lines;
+	unsigned int	i;
+	unsigned int	row;
+
+	if (!vars || !map)
+		return (0);
+	lines = ft_split(map, '\n');
+	if (!lines)
+		return (0);
+	i = 0;
+	while (lines[i])
+		i++;
+	if (i == 0)
+		return (free_lines(lines), 0);
+	vars->point_map.points = malloc((i + 1) * sizeof(t_point *));
+	if (!vars->point_map.points)
+		return (free_lines(lines), 0);
+	vars->point_map.height = 0;
+	vars->point_map.width = 0;
+	row = 0;
+	while (lines[row])
+	{
+		if (!alloc_and_parse(vars, lines, row))
+			return (free_points(vars), free_lines(lines), 0);
+		row++;
+	}
+	vars->point_map.points[vars->point_map.height] = NULL;
+	return (free_lines(lines), 1);
 }

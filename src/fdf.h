@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcosta-b <bcosta-b@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: bcosta-b <bcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 19:17:46 by bcosta-b          #+#    #+#             */
-/*   Updated: 2025/12/06 22:07:42 by bcosta-b         ###   ########.fr       */
+/*   Updated: 2025/12/22 13:26:20 by bcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,11 +133,13 @@ int				count_tokens(const char *str);
 int				free_points(t_vars *vars);
 int				try_parse(t_vars *vars, char *map);
 char			*read_file_to_string(int fd);
+int				parse_map(t_vars *vars, char *filename);
 
 void			draw_line_optimized(t_vars *vars, t_point p1, t_point p2);
 void			put_pixel(t_vars *vars, int x, int y, t_color color);
 void			draw_line(t_vars *vars, t_point p1, t_point p2);
 void			render(t_vars *vars);
+int				is_visible(t_point p, t_vars *vars);
 
 t_point			project_iso(t_point p, t_vars *vars);
 
@@ -145,5 +147,23 @@ int				handle_keypress(int keycode, t_vars *vars);
 int				handle_keyrelease(int keycode, t_vars *vars);
 int				close_window(t_vars *vars);
 int				update_and_render(t_vars *vars);
+void			update_rotation(t_vars *vars, double y_axis[3], double z_axis[3], int *changed);
+void			update_rotation_x(t_vars *vars, double x_axis[3], int *changed);
+void			update_translation(t_vars *vars, int *changed);
+void			update_zoom(t_vars *vars, int *changed);
+
+void			init_screen_size(t_vars *vars);
+void			init_vars(t_vars *vars);
+int				setup_mlx(t_vars *vars);
+
+void			ft_putstr_fd(char *s, int fd);
+void			*ft_memset(void *s, int c, size_t n);
+int				ft_atoi(const char *str);
+char			*ft_strchr(const char *s, int c);
+char			*ft_strdup(const char *s);
+unsigned int	ft_atoi_base(const char *str, int base);
+char			*ft_skip_spaces(char *str);
+char			**ft_split(char const *s, char c);
+char			*ft_strjoin(char const *s1, char const *s2);
 
 #endif

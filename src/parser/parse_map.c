@@ -1,42 +1,46 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_file_to_string.c                              :+:      :+:    :+:   */
+/*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bcosta-b <bcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/20 19:42:09 by bcosta-b          #+#    #+#             */
-/*   Updated: 2025/12/22 13:27:33 by bcosta-b         ###   ########.fr       */
+/*   Created: 2025/12/22 00:00:00 by bcosta-b          #+#    #+#             */
+/*   Updated: 2025/12/22 13:05:27 by bcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fdf.h"
-#include <stdlib.h>
+#include <fcntl.h>
 #include <unistd.h>
+#include <stdlib.h>
 
-char	*read_file_to_string(int fd)
+int	parse_map(t_vars *vars, char *filename)
 {
-	char	buffer[BUFFER_SIZE];
+	int		fd;
 	char	*content;
-	char	*temp;
-	ssize_t	bytes_read;
 
-	content = ft_strdup("");
+	fd = open(filename, O_RDONLY);
+	if (fd < 0)
+	{
+		ft_putstr_fd("Error: open\n", 2);
+		return (0);
+	}
+	content = read_file_to_string(fd);
 	if (!content)
-		return (NULL);
-	while ((bytes_read = read(fd, buffer, BUFFER_SIZE - 1)) > 0)
 	{
-		buffer[bytes_read] = '\0';
-		temp = ft_strjoin(content, buffer);
-		free(content);
-		if (!temp)
-			return (NULL);
-		content = temp;
+		ft_putstr_fd("Error: read_file_to_string\n", 2);
+		close(fd);
+		return (0);
 	}
-	if (bytes_read < 0)
+	if (!try_parse(vars, content))
 	{
+		ft_putstr_fd("Erro: falha ao analisar o mapa\n", 2);
 		free(content);
-		return (NULL);
+		close(fd);
+		return (0);
 	}
-	return (content);
+	free(content);
+	close(fd);
+	return (1);
 }

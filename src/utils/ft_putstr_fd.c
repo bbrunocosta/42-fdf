@@ -1,34 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   update_and_render.c                                :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bcosta-b <bcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/06 00:00:00 by bcosta-b          #+#    #+#             */
-/*   Updated: 2025/12/22 12:57:47 by bcosta-b         ###   ########.fr       */
+/*   Created: 2025/12/22 00:00:00 by bcosta-b          #+#    #+#             */
+/*   Updated: 2025/12/22 13:05:01 by bcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fdf.h"
+#include <unistd.h>
 
-int	update_and_render(t_vars *vars)
+void	ft_putstr_fd(char *s, int fd)
 {
-	double	x_axis[3];
-	double	y_axis[3];
-	double	z_axis[3];
-	int		changed;
+	int	i;
 
-	changed = 0;
-	quat_to_axes(vars->quat, x_axis, y_axis, z_axis);
-	update_rotation(vars, y_axis, z_axis, &changed);
-	update_rotation_x(vars, x_axis, &changed);
-	update_translation(vars, &changed);
-	update_zoom(vars, &changed);
-	if (changed || vars->needs_render)
+	if (!s)
+		return ;
+	i = 0;
+	while (s[i])
 	{
-		render(vars);
-		vars->needs_render = 0;
+		write(fd, &s[i], 1);
+		i++;
 	}
-	return (0);
 }

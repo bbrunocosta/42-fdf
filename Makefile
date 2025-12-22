@@ -31,6 +31,7 @@ SRCS = src/main.c \
        src/parser/count_tokens.c \
        src/parser/read_file_to_string.c \
        src/parser/try_parse.c \
+       src/parser/parse_map.c \
        src/quaternions/quat_conjugate.c \
        src/quaternions/quat_from_axis_angle.c \
        src/quaternions/quat_identity.c \
@@ -41,11 +42,28 @@ SRCS = src/main.c \
        src/rendering/put_pixel.c \
        src/rendering/draw_line.c \
        src/rendering/render.c \
+       src/rendering/is_visible.c \
        src/projection/project_iso.c \
        src/events/handle_keypress.c \
        src/events/handle_keyrelease.c \
        src/events/close_window.c \
-       src/events/update_and_render.c
+       src/events/update_and_render.c \
+       src/events/update_rotation.c \
+       src/events/update_rotation_x.c \
+       src/events/update_translation.c \
+       src/events/update_zoom.c \
+       src/init/init_screen_size.c \
+       src/init/init_vars.c \
+       src/init/setup_mlx.c \
+       src/utils/ft_putstr_fd.c \
+       src/utils/ft_memset.c \
+       src/utils/ft_atoi.c \
+       src/utils/ft_strchr.c \
+       src/utils/ft_strdup.c \
+       src/utils/ft_atoi_base.c \
+       src/utils/ft_skip_spaces.c \
+       src/utils/ft_split.c \
+       src/utils/ft_strjoin.c
 
 # Arquivos objeto
 OBJS = $(SRCS:src/%.c=$(OBJ_DIR)/%.o)

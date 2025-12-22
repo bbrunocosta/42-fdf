@@ -1,34 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   update_and_render.c                                :+:      :+:    :+:   */
+/*   update_zoom.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bcosta-b <bcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/06 00:00:00 by bcosta-b          #+#    #+#             */
+/*   Created: 2025/12/22 00:00:00 by bcosta-b          #+#    #+#             */
 /*   Updated: 2025/12/22 12:57:47 by bcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fdf.h"
 
-int	update_and_render(t_vars *vars)
+void	update_zoom(t_vars *vars, int *changed)
 {
-	double	x_axis[3];
-	double	y_axis[3];
-	double	z_axis[3];
-	int		changed;
+	double	zoom_step;
 
-	changed = 0;
-	quat_to_axes(vars->quat, x_axis, y_axis, z_axis);
-	update_rotation(vars, y_axis, z_axis, &changed);
-	update_rotation_x(vars, x_axis, &changed);
-	update_translation(vars, &changed);
-	update_zoom(vars, &changed);
-	if (changed || vars->needs_render)
+	zoom_step = 0.02;
+	if (vars->keys.plus)
 	{
-		render(vars);
-		vars->needs_render = 0;
+		vars->zoom += zoom_step;
+		if (vars->zoom > 10.0)
+			vars->zoom = 10.0;
+		*changed = 1;
 	}
-	return (0);
+	if (vars->keys.minus)
+	{
+		vars->zoom -= zoom_step;
+		if (vars->zoom < 0.1)
+			vars->zoom = 0.1;
+		*changed = 1;
+	}
 }

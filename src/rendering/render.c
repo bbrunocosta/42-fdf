@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcosta-b <bcosta-b@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: bcosta-b <bcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 00:00:00 by bcosta-b          #+#    #+#             */
-/*   Updated: 2025/12/06 21:48:58 by bcosta-b         ###   ########.fr       */
+/*   Updated: 2025/12/22 13:17:29 by bcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fdf.h"
 #include "mlx.h"
-#include <string.h>
 
 void	render(t_vars *vars)
 {
@@ -22,7 +21,8 @@ void	render(t_vars *vars)
 	t_point			p1;
 	t_point			p2;
 
-	memset(vars->screen.addr, 0, vars->screen.height * vars->screen.line_length);
+	ft_memset(vars->screen.addr, 0, vars->screen.height
+		* vars->screen.line_length);
 	step = 1;
 	if (vars->zoom < 0.3)
 		step = 4;

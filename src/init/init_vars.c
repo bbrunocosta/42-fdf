@@ -1,30 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   close_window.c                                     :+:      :+:    :+:   */
+/*   init_vars.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bcosta-b <bcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/06 00:00:00 by bcosta-b          #+#    #+#             */
-/*   Updated: 2025/12/22 14:03:02 by bcosta-b         ###   ########.fr       */
+/*   Created: 2025/12/22 00:00:00 by bcosta-b          #+#    #+#             */
+/*   Updated: 2025/12/22 13:17:32 by bcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fdf.h"
-#include "mlx.h"
-#include <stdlib.h>
 
-int	close_window(t_vars *vars)
+void	init_vars(t_vars *vars)
 {
-	free_points(vars);
-	if (vars->screen.img)
-		mlx_destroy_image(vars->mlx, vars->screen.img);
-	if (vars->win)
-		mlx_destroy_window(vars->mlx, vars->win);
-	if (vars->mlx)
-	{
-		mlx_destroy_display(vars->mlx);
-		free(vars->mlx);
-	}
-	exit(0);
+	vars->quat = quat_identity();
+	vars->rotation.x = 0;
+	vars->rotation.y = 0;
+	vars->rotation.z = 0;
+	vars->translation.x = 0;
+	vars->translation.y = 0;
+	vars->zoom = 1.0;
+	vars->needs_render = 1;
+	ft_memset(&vars->keys, 0, sizeof(t_keys));
 }

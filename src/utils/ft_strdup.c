@@ -1,42 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_file_to_string.c                              :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bcosta-b <bcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/20 19:42:09 by bcosta-b          #+#    #+#             */
-/*   Updated: 2025/12/22 13:27:33 by bcosta-b         ###   ########.fr       */
+/*   Created: 2025/12/22 00:00:00 by bcosta-b          #+#    #+#             */
+/*   Updated: 2025/12/22 13:17:36 by bcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fdf.h"
 #include <stdlib.h>
-#include <unistd.h>
 
-char	*read_file_to_string(int fd)
+char	*ft_strdup(const char *s)
 {
-	char	buffer[BUFFER_SIZE];
-	char	*content;
-	char	*temp;
-	ssize_t	bytes_read;
+	char	*dup;
+	int		len;
+	int		i;
 
-	content = ft_strdup("");
-	if (!content)
+	if (!s)
 		return (NULL);
-	while ((bytes_read = read(fd, buffer, BUFFER_SIZE - 1)) > 0)
-	{
-		buffer[bytes_read] = '\0';
-		temp = ft_strjoin(content, buffer);
-		free(content);
-		if (!temp)
-			return (NULL);
-		content = temp;
-	}
-	if (bytes_read < 0)
-	{
-		free(content);
+	len = 0;
+	while (s[len])
+		len++;
+	dup = (char *)malloc(sizeof(char) * (len + 1));
+	if (!dup)
 		return (NULL);
+	i = 0;
+	while (i < len)
+	{
+		dup[i] = s[i];
+		i++;
 	}
-	return (content);
+	dup[i] = '\0';
+	return (dup);
 }

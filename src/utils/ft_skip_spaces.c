@@ -1,30 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   close_window.c                                     :+:      :+:    :+:   */
+/*   ft_skip_spaces.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bcosta-b <bcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/06 00:00:00 by bcosta-b          #+#    #+#             */
-/*   Updated: 2025/12/22 14:03:02 by bcosta-b         ###   ########.fr       */
+/*   Created: 2025/12/22 00:00:00 by bcosta-b          #+#    #+#             */
+/*   Updated: 2025/12/22 13:17:38 by bcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fdf.h"
-#include "mlx.h"
-#include <stdlib.h>
 
-int	close_window(t_vars *vars)
+char	*ft_skip_spaces(char *str)
 {
-	free_points(vars);
-	if (vars->screen.img)
-		mlx_destroy_image(vars->mlx, vars->screen.img);
-	if (vars->win)
-		mlx_destroy_window(vars->mlx, vars->win);
-	if (vars->mlx)
-	{
-		mlx_destroy_display(vars->mlx);
-		free(vars->mlx);
-	}
-	exit(0);
+	if (!str)
+		return (NULL);
+	while (*str && (*str == ' ' || *str == '\t'))
+		str++;
+	return (str);
 }
