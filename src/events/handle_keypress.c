@@ -6,18 +6,16 @@
 /*   By: bcosta-b <bcosta-b@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 00:00:00 by bcosta-b          #+#    #+#             */
-/*   Updated: 2025/12/06 21:50:03 by bcosta-b         ###   ########.fr       */
+/*   Updated: 2025/12/23 00:01:25 by bcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fdf.h"
 #include <stdlib.h>
 
-int	handle_keypress(int keycode, t_vars *vars)
+static int	handle_other_keys(int keycode, t_vars *vars)
 {
-	if (keycode == KEY_ESC)
-		exit(0);
-	else if (keycode == KEY_W)
+	if (keycode == KEY_W)
 		vars->keys.w = 1;
 	else if (keycode == KEY_S)
 		vars->keys.s = 1;
@@ -42,4 +40,11 @@ int	handle_keypress(int keycode, t_vars *vars)
 	else if (keycode == KEY_MINUS)
 		vars->keys.minus = 1;
 	return (0);
+}
+
+int	handle_keypress(int keycode, t_vars *vars)
+{
+	if (keycode == KEY_ESC)
+		exit(0);
+	return (handle_other_keys(keycode, vars));
 }

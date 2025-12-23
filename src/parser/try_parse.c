@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   try_parse.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bcosta-b <bcosta-b@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/23 00:28:26 by bcosta-b          #+#    #+#             */
+/*   Updated: 2025/12/23 00:36:51 by bcosta-b         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../fdf.h"
 #include <stdlib.h>
 
@@ -83,34 +95,55 @@ static int	alloc_and_parse(t_vars *vars, char **lines, unsigned int row)
 	return (1);
 }
 
+static unsigned int	count_lines(char **lines)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (lines[i])
+		i++;
+	return (i);
+}
+
+static int	init_point_map(t_vars *vars, unsigned int line_count)
+{
+	vars->point_map.points = malloc((line_count + 1) * sizeof(t_point *));
+	if (!vars->point_map.points)
+		return (0);
+	vars->point_map.height = 0;
+	vars->point_map.width = 0;
+	return (1);
+}
+
+static int	parse_all_rows(t_vars *vars, char **lines)
+{
+	unsigned int	row;
+
+	row = 0;
+	while (lines[row])
+	{
+		if (!alloc_and_parse(vars, lines, row))
+			return (0);
+		row++;
+	}
+	vars->point_map.points[vars->point_map.height] = NULL;
+	return (1);
+}
+
 int	try_parse(t_vars *vars, char *map)
 {
 	char			**lines;
-	unsigned int	i;
-	unsigned int	row;
+	unsigned int	line_count;
 
 	if (!vars || !map)
 		return (0);
 	lines = ft_split(map, '\n');
 	if (!lines)
 		return (0);
-	i = 0;
-	while (lines[i])
-		i++;
-	if (i == 0)
+	line_count = count_lines(lines);
+	if (line_count == 0 || !init_point_map(vars, line_count))
 		return (free_lines(lines), 0);
-	vars->point_map.points = malloc((i + 1) * sizeof(t_point *));
-	if (!vars->point_map.points)
-		return (free_lines(lines), 0);
-	vars->point_map.height = 0;
-	vars->point_map.width = 0;
-	row = 0;
-	while (lines[row])
-	{
-		if (!alloc_and_parse(vars, lines, row))
-			return (free_points(vars), free_lines(lines), 0);
-		row++;
-	}
-	vars->point_map.points[vars->point_map.height] = NULL;
+	if (!parse_all_rows(vars, lines))
+		return (free_points(vars), free_lines(lines), 0);
 	return (free_lines(lines), 1);
 }
