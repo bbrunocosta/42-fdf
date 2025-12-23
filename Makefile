@@ -32,6 +32,13 @@ SRCS = src/main.c \
        src/parser/read_file_to_string.c \
        src/parser/try_parse.c \
        src/parser/parse_map.c \
+       src/parser/parse_point.c \
+       src/parser/parse_line.c \
+       src/parser/alloc_and_parse.c \
+       src/parser/count_lines.c \
+       src/parser/init_point_map.c \
+       src/parser/parse_all_rows.c \
+       src/parser/free_lines.c \
        src/quaternions/quat_conjugate.c \
        src/quaternions/quat_from_axis_angle.c \
        src/quaternions/quat_identity.c \

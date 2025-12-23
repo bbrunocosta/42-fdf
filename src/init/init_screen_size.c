@@ -6,12 +6,13 @@
 /*   By: bcosta-b <bcosta-b@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 00:00:00 by bcosta-b          #+#    #+#             */
-/*   Updated: 2025/12/23 00:18:20 by bcosta-b         ###   ########.fr       */
+/*   Updated: 2025/12/23 00:38:49 by bcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fdf.h"
 #include "mlx.h"
+#include <math.h>
 
 void	init_screen_size(t_vars *vars)
 {

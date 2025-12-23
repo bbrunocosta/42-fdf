@@ -1,24 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   quat_identity.c                                    :+:      :+:    :+:   */
+/*   free_lines.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bcosta-b <bcosta-b@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/20 19:31:43 by bcosta-b          #+#    #+#             */
-/*   Updated: 2025/12/23 00:49:35 by bcosta-b         ###   ########.fr       */
+/*   Created: 2025/12/23 00:00:00 by bcosta-b          #+#    #+#             */
+/*   Updated: 2025/12/23 00:45:27 by bcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../fdf.h"
+#include <stdlib.h>
 
-t_quaternion	quat_identity(void)
+void	free_lines(char **lines)
 {
-	t_quaternion	q;
+	int	i;
 
-	q.w = 1.0;
-	q.x = 0.0;
-	q.y = 0.0;
-	q.z = 0.0;
-	return (q);
+	if (!lines)
+		return ;
+	i = 0;
+	while (lines[i])
+		free(lines[i++]);
+	free(lines);
 }

@@ -1,24 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   quat_identity.c                                    :+:      :+:    :+:   */
+/*   parse_all_rows.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bcosta-b <bcosta-b@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/20 19:31:43 by bcosta-b          #+#    #+#             */
-/*   Updated: 2025/12/23 00:49:35 by bcosta-b         ###   ########.fr       */
+/*   Created: 2025/12/23 00:00:00 by bcosta-b          #+#    #+#             */
+/*   Updated: 2025/12/23 00:43:17 by bcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fdf.h"
 
-t_quaternion	quat_identity(void)
+int	parse_all_rows(t_vars *vars, char **lines)
 {
-	t_quaternion	q;
+	unsigned int	row;
 
-	q.w = 1.0;
-	q.x = 0.0;
-	q.y = 0.0;
-	q.z = 0.0;
-	return (q);
+	row = 0;
+	while (lines[row])
+	{
+		if (!alloc_and_parse(vars, lines, row))
+			return (0);
+		row++;
+	}
+	vars->point_map.points[vars->point_map.height] = NULL;
+	return (1);
 }

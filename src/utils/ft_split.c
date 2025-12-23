@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcosta-b <bcosta-b@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bcosta-b <bcosta-b@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 00:00:00 by bcosta-b          #+#    #+#             */
-/*   Updated: 2025/12/22 13:17:39 by bcosta-b         ###   ########.fr       */
+/*   Updated: 2025/12/23 00:59:34 by bcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,15 @@ static char	*get_word(char const *s, char c)
 	return (word);
 }
 
+static int	fill_word(char **result, char const **s, char c, int i)
+{
+	result[i] = get_word(*s, c);
+	if (!result[i])
+		return (0);
+	*s += word_len(*s, c);
+	return (1);
+}
+
 char	**ft_split(char const *s, char c)
 {
 	char	**result;
@@ -81,14 +90,8 @@ char	**ft_split(char const *s, char c)
 	{
 		while (*s && *s == c)
 			s++;
-		if (*s)
-		{
-			result[i] = get_word(s, c);
-			if (!result[i])
-				return (NULL);
-			s += word_len(s, c);
-			i++;
-		}
+		if (*s && !fill_word(result, &s, c, i++))
+			return (NULL);
 	}
 	result[i] = NULL;
 	return (result);

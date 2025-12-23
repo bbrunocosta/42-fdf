@@ -1,24 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   quat_identity.c                                    :+:      :+:    :+:   */
+/*   parse_point.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bcosta-b <bcosta-b@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/20 19:31:43 by bcosta-b          #+#    #+#             */
-/*   Updated: 2025/12/23 00:49:35 by bcosta-b         ###   ########.fr       */
+/*   Created: 2025/12/23 00:00:00 by bcosta-b          #+#    #+#             */
+/*   Updated: 2025/12/23 00:43:33 by bcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fdf.h"
 
-t_quaternion	quat_identity(void)
+int	parse_point(char *token, t_point *point, unsigned int row,
+		unsigned int col)
 {
-	t_quaternion	q;
+	char		*color_part;
+	int			z;
+	t_color		color;
 
-	q.w = 1.0;
-	q.x = 0.0;
-	q.y = 0.0;
-	q.z = 0.0;
-	return (q);
+	color_part = ft_strchr(token, ',');
+	z = ft_atoi(token);
+	if (color_part)
+		color.hex = ft_atoi_base(color_part + 1, 16);
+	else
+		color.hex = 0xFFFFFF;
+	point->x = col;
+	point->y = row;
+	point->z = z;
+	point->color = color;
+	return (1);
 }
