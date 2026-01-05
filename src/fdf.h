@@ -6,7 +6,7 @@
 /*   By: bcosta-b <bcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 19:17:46 by bcosta-b          #+#    #+#             */
-/*   Updated: 2026/01/05 12:19:15 by bcosta-b         ###   ########.fr       */
+/*   Updated: 2026/01/05 18:12:17 by bcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/time.h>
 
 #define BUFFER_SIZE 1024
 #define M_PI 3.14159265358979323846
@@ -22,6 +23,8 @@
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 800
 #define MARGIN 100
+#define ROTATION_STEP 0.08726646259971647
+#define ROTATION_DEBOUNCE_MS 150
 
 #define KEY_ESC 65307
 #define KEY_LEFT 65361
@@ -121,6 +124,9 @@ typedef struct s_vars {
 	double			zoom;
 	t_quaternion	quat;
 	int				needs_render;
+	long			last_rotation_x_time;
+	long			last_rotation_y_time;
+	long			last_rotation_z_time;
 }	t_vars;
 
 
