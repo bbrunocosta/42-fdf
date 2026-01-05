@@ -6,7 +6,7 @@
 /*   By: bcosta-b <bcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 00:00:00 by bcosta-b          #+#    #+#             */
-/*   Updated: 2025/12/22 12:57:49 by bcosta-b         ###   ########.fr       */
+/*   Updated: 2026/01/05 12:04:41 by bcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,23 @@ void	init_screen_size(t_vars *vars)
 	double	scale_y;
 
 	mlx_get_screen_size(vars->mlx, &screen_w, &screen_h);
-	if (screen_w > 2560)
-		screen_w = 2560;
-	if (screen_h > 1440)
-		screen_h = 1440;
-	vars->screen.width = screen_w * 0.8;
-	vars->screen.height = screen_h * 0.8;
-	usable_width = vars->screen.width * 0.85;
-	usable_height = vars->screen.height * 0.85;
-	projected_width = vars->point_map.width * 0.866 + vars->point_map.height * 0.866;
-	projected_height = vars->point_map.width * 0.5 + vars->point_map.height * 0.5;
+	if (screen_w > WINDOW_WIDTH)
+		screen_w = WINDOW_WIDTH;
+	if (screen_h > WINDOW_HEIGHT)
+		screen_h = WINDOW_HEIGHT;
+	vars->screen.width = screen_w;
+	vars->screen.height = screen_h;
+	usable_width = vars->screen.width - (2 * MARGIN);
+	usable_height = vars->screen.height - (2 * MARGIN);
+	projected_width = vars->point_map.width - 1;
+	projected_height = vars->point_map.height - 1;
+	if (projected_width == 0)
+		projected_width = 1;
+	if (projected_height == 0)
+		projected_height = 1;
 	scale_x = usable_width / projected_width;
 	scale_y = usable_height / projected_height;
 	vars->screen.size = (scale_x < scale_y) ? scale_x : scale_y;
 	vars->screen.offset_x = vars->screen.width / 2;
-	vars->screen.offset_y = vars->screen.height / 2.5;
+	vars->screen.offset_y = vars->screen.height / 2;
 }

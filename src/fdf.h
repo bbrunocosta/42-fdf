@@ -6,7 +6,7 @@
 /*   By: bcosta-b <bcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 19:17:46 by bcosta-b          #+#    #+#             */
-/*   Updated: 2025/12/22 13:26:20 by bcosta-b         ###   ########.fr       */
+/*   Updated: 2026/01/05 12:04:41 by bcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@
 
 #define BUFFER_SIZE 1024
 #define M_PI 3.14159265358979323846
+
+#define WINDOW_WIDTH 800
+#define WINDOW_HEIGHT 800
+#define MARGIN 100
 
 #define KEY_ESC 65307
 #define KEY_LEFT 65361

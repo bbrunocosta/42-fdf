@@ -27,8 +27,8 @@ void	update_zoom(t_vars *vars, int *changed)
 	if (vars->keys.minus)
 	{
 		vars->zoom -= zoom_step;
-		if (vars->zoom < 0.1)
-			vars->zoom = 0.1;
+		if (vars->zoom < 0.001)
+			vars->zoom = 0.001;
 		*changed = 1;
 	}
 }
