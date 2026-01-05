@@ -6,7 +6,7 @@
 /*   By: bcosta-b <bcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 19:17:46 by bcosta-b          #+#    #+#             */
-/*   Updated: 2026/01/05 18:12:17 by bcosta-b         ###   ########.fr       */
+/*   Updated: 2026/01/05 18:20:00 by bcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/time.h>
+#include <math.h>
 
 #define BUFFER_SIZE 1024
 #define M_PI 3.14159265358979323846
