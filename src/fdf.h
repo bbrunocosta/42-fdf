@@ -6,7 +6,7 @@
 /*   By: bcosta-b <bcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 19:17:46 by bcosta-b          #+#    #+#             */
-/*   Updated: 2026/01/05 12:04:41 by bcosta-b         ###   ########.fr       */
+/*   Updated: 2026/01/05 12:19:15 by bcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,8 +151,8 @@ int				handle_keypress(int keycode, t_vars *vars);
 int				handle_keyrelease(int keycode, t_vars *vars);
 int				close_window(t_vars *vars);
 int				update_and_render(t_vars *vars);
-void			update_rotation(t_vars *vars, double y_axis[3], double z_axis[3], int *changed);
-void			update_rotation_x(t_vars *vars, double x_axis[3], int *changed);
+void			update_rotation(t_vars *vars, int *changed);
+void			update_rotation_x(t_vars *vars, int *changed);
 void			update_translation(t_vars *vars, int *changed);
 void			update_zoom(t_vars *vars, int *changed);
 

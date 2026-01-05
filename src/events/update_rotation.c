@@ -6,45 +6,35 @@
 /*   By: bcosta-b <bcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 00:00:00 by bcosta-b          #+#    #+#             */
-/*   Updated: 2025/12/22 12:57:45 by bcosta-b         ###   ########.fr       */
+/*   Updated: 2026/01/05 17:43:19 by bcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fdf.h"
 
-void	update_rotation(t_vars *vars, double y_axis[3], double z_axis[3], 
-							int *changed)
+void	update_rotation(t_vars *vars, int *changed)
 {
-	double			step;
-	t_quaternion	rot;
+	double	step;
 
-	step = 0.01;
+	step = 0.05;
 	if (vars->keys.q)
 	{
-		rot = quat_from_axis_angle(z_axis[0], z_axis[1], z_axis[2], -step);
-		vars->quat = quat_multiply(rot, vars->quat);
-		vars->quat = quat_normalize(vars->quat);
+		vars->rotation.z += step;
 		*changed = 1;
 	}
 	if (vars->keys.e)
 	{
-		rot = quat_from_axis_angle(z_axis[0], z_axis[1], z_axis[2], step);
-		vars->quat = quat_multiply(rot, vars->quat);
-		vars->quat = quat_normalize(vars->quat);
+		vars->rotation.z -= step;
 		*changed = 1;
 	}
 	if (vars->keys.a)
 	{
-		rot = quat_from_axis_angle(y_axis[0], y_axis[1], y_axis[2], -step);
-		vars->quat = quat_multiply(rot, vars->quat);
-		vars->quat = quat_normalize(vars->quat);
+		vars->rotation.y += step;
 		*changed = 1;
 	}
 	if (vars->keys.d)
 	{
-		rot = quat_from_axis_angle(y_axis[0], y_axis[1], y_axis[2], step);
-		vars->quat = quat_multiply(rot, vars->quat);
-		vars->quat = quat_normalize(vars->quat);
+		vars->rotation.y -= step;
 		*changed = 1;
 	}
 }
