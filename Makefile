@@ -6,7 +6,7 @@
 #    By: bcosta-b <bcosta-b@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/12 00:00:00 by                   #+#    #+#              #
-#    Updated: 2026/01/11 20:38:56 by bcosta-b         ###   ########.fr        #
+#    Updated: 2026/01/11 22:49:53 by bcosta-b         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ SRCS = src/main.c \
        src/parser/count_tokens.c \
        src/parser/read_file_to_string.c \
        src/parser/try_parse.c \
+       src/parser/is_valid_number.c \
        src/parser/parse_map.c \
        src/quaternions/quat_conjugate.c \
        src/quaternions/quat_from_axis_angle.c \

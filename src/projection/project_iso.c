@@ -22,15 +22,15 @@ t_point	project_iso(t_point p, t_vars *vars)
 	t_quaternion	quat_inv;
 
 	centered.x = p.x - (vars->point_map.width - 1) / 2.0;
-	centered.y = p.y - (vars->point_map.height - 1) / 2.0;
-	centered.z = p.z;
+	centered.y = p.z * Z_SCALE_FACTOR;
+	centered.z = p.y - (vars->point_map.height - 1) / 2.0;
 	centered.color = p.color;
 	quat_inv = quat_conjugate(vars->quat);
 	rotated = quat_rotate_point(quat_inv, centered);
 	scale = vars->screen.size * vars->zoom;
 	projected.x = vars->screen.offset_x + rotated.x
 		* scale + vars->translation.x;
-	projected.y = vars->screen.offset_y + rotated.y
+	projected.y = vars->screen.offset_y - rotated.y
 		* scale + vars->translation.y;
 	projected.z = rotated.z;
 	projected.color = p.color;

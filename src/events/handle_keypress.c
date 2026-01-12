@@ -6,27 +6,37 @@
 /*   By: bcosta-b <bcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 00:00:00 by bcosta-b          #+#    #+#             */
-/*   Updated: 2026/01/11 20:03:26 by bcosta-b         ###   ########.fr       */
+/*   Updated: 2026/01/11 22:57:38 by bcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fdf.h"
 #include <stdlib.h>
 
+static void	apply_rotation(t_vars *vars, double x, double y, double z, double a)
+{
+	t_quaternion	delta;
+
+	delta = quat_from_axis_angle(x, y, z, a);
+	vars->quat = quat_multiply(delta, vars->quat);
+	vars->quat = quat_normalize(vars->quat);
+	vars->needs_render = 1;
+}
+
 static void	handle_movement_keys(int keycode, t_vars *vars)
 {
 	if (keycode == KEY_W)
-		vars->keys.w = 1;
+		apply_rotation(vars, 1, 0, 0, ROTATION_STEP);
 	else if (keycode == KEY_S)
-		vars->keys.s = 1;
+		apply_rotation(vars, 1, 0, 0, -ROTATION_STEP);
 	else if (keycode == KEY_A)
-		vars->keys.a = 1;
+		apply_rotation(vars, 0, 0, 1, -ROTATION_STEP);
 	else if (keycode == KEY_D)
-		vars->keys.d = 1;
+		apply_rotation(vars, 0, 0, 1, ROTATION_STEP);
 	else if (keycode == KEY_Q)
-		vars->keys.q = 1;
+		apply_rotation(vars, 0, 1, 0, -ROTATION_STEP);
 	else if (keycode == KEY_E)
-		vars->keys.e = 1;
+		apply_rotation(vars, 0, 1, 0, ROTATION_STEP);
 }
 
 static void	handle_arrow_keys(int keycode, t_vars *vars)
@@ -48,7 +58,12 @@ static void	handle_arrow_keys(int keycode, t_vars *vars)
 int	handle_keypress(int keycode, t_vars *vars)
 {
 	if (keycode == KEY_ESC)
-		exit(0);
+		close_window(vars);
+	if (keycode == KEY_P)
+	{
+		vars->quat = quat_identity();
+		vars->needs_render = 1;
+	}
 	handle_movement_keys(keycode, vars);
 	handle_arrow_keys(keycode, vars);
 	return (0);

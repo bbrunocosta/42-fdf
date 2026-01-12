@@ -1,20 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   update_rotation.c                                  :+:      :+:    :+:   */
+/*   is_valid_number.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bcosta-b <bcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/22 00:00:00 by bcosta-b          #+#    #+#             */
-/*   Updated: 2026/01/11 23:06:07 by bcosta-b         ###   ########.fr       */
+/*   Created: 2026/01/11 00:00:00 by bcosta-b          #+#    #+#             */
+/*   Updated: 2026/01/11 22:49:51 by bcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../fdf.h"
-
-void	update_rotation(t_vars *vars, int *changed)
+int	is_valid_number(char *str)
 {
-	update_rotation_x(vars, changed);
-	update_rotation_y(vars, changed);
-	update_rotation_z(vars, changed);
+	int	i;
+
+	i = 0;
+	if (str[i] == '-' || str[i] == '+')
+		i++;
+	if (!str[i])
+		return (0);
+	while (str[i] && str[i] != ',')
+	{
+		if (str[i] < '0' || str[i] > '9')
+			return (0);
+		i++;
+	}
+	return (1);
 }

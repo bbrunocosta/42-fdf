@@ -6,7 +6,7 @@
 /*   By: bcosta-b <bcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 19:17:46 by bcosta-b          #+#    #+#             */
-/*   Updated: 2026/01/11 21:28:11 by bcosta-b         ###   ########.fr       */
+/*   Updated: 2026/01/11 23:03:03 by bcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,13 @@
 
 # define BUFFER_SIZE 1024
 # define M_PI 3.14159265358979323846
+# define DEG_TO_RAD (M_PI / 180.0)
 
 # define WINDOW_WIDTH 800
 # define WINDOW_HEIGHT 800
 # define MARGIN 100
-# define ROTATION_STEP 0.08726646259971647
+# define ROTATION_STEP (5.0 * DEG_TO_RAD)
+# define Z_SCALE_FACTOR 0.5
 
 # define KEY_ESC 65307
 # define KEY_LEFT 65361
@@ -36,6 +38,7 @@
 # define KEY_D 100
 # define KEY_Q 113
 # define KEY_E 101
+# define KEY_P 112
 # define KEY_PLUS 61
 # define KEY_MINUS 45
 
@@ -158,6 +161,7 @@ t_quaternion	quat_normalize(t_quaternion q);
 int				count_tokens(const char *str);
 int				free_points(t_vars *vars);
 int				try_parse(t_vars *vars, char *map);
+int				is_valid_number(char *str);
 char			*read_file_to_string(int fd);
 int				parse_map(t_vars *vars, char *filename);
 

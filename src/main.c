@@ -6,7 +6,7 @@
 /*   By: bcosta-b <bcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 00:00:00 by bcosta-b          #+#    #+#             */
-/*   Updated: 2025/12/22 14:07:23 by bcosta-b         ###   ########.fr       */
+/*   Updated: 2026/01/11 22:53:53 by bcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	main(int argc, char **argv)
 {
 	t_vars	vars;
 
-	if (argc < 2)
+	if (argc != 2)
 	{
 		ft_putstr_fd("usage: ./fdf <file.fdf>\n", 2);
 		return (1);

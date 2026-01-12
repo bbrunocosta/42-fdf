@@ -6,7 +6,7 @@
 /*   By: bcosta-b <bcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/11 19:25:03 by bcosta-b          #+#    #+#             */
-/*   Updated: 2026/01/11 19:28:27 by bcosta-b         ###   ########.fr       */
+/*   Updated: 2026/01/11 22:50:01 by bcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ static int	parse_point(char *token, t_point *point, unsigned int row,
 	int			z;
 	t_color		color;
 
+	if (!is_valid_number(token))
+		return (0);
 	color_part = ft_strchr(token, ',');
 	z = ft_atoi(token);
 	if (color_part)
