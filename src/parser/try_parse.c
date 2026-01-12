@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   try_parse.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bcosta-b <bcosta-b@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/11 19:25:03 by bcosta-b          #+#    #+#             */
+/*   Updated: 2026/01/11 19:28:27 by bcosta-b         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../fdf.h"
 #include <stdlib.h>
 
@@ -87,7 +99,6 @@ int	try_parse(t_vars *vars, char *map)
 {
 	char			**lines;
 	unsigned int	i;
-	unsigned int	row;
 
 	if (!vars || !map)
 		return (0);
@@ -104,13 +115,10 @@ int	try_parse(t_vars *vars, char *map)
 		return (free_lines(lines), 0);
 	vars->point_map.height = 0;
 	vars->point_map.width = 0;
-	row = 0;
-	while (lines[row])
-	{
-		if (!alloc_and_parse(vars, lines, row))
+	i = 0;
+	while (lines[i])
+		if (!alloc_and_parse(vars, lines, i++))
 			return (free_points(vars), free_lines(lines), 0);
-		row++;
-	}
 	vars->point_map.points[vars->point_map.height] = NULL;
 	return (free_lines(lines), 1);
 }

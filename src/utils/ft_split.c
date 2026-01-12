@@ -73,21 +73,18 @@ char	**ft_split(char const *s, char c)
 	if (!s)
 		return (NULL);
 	words = count_words(s, c);
-	result = (char **)malloc(sizeof(char *) * (words + 1));
+	result = malloc(sizeof(char *) * (words + 1));
 	if (!result)
 		return (NULL);
 	i = 0;
 	while (*s)
 	{
-		while (*s && *s == c)
+		while (*s == c)
 			s++;
 		if (*s)
 		{
-			result[i] = get_word(s, c);
-			if (!result[i])
-				return (NULL);
+			result[i++] = get_word(s, c);
 			s += word_len(s, c);
-			i++;
 		}
 	}
 	result[i] = NULL;

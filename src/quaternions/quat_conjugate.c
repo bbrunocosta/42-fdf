@@ -14,11 +14,11 @@
 
 t_quaternion	quat_conjugate(t_quaternion q)
 {
-    t_quaternion	conj;
+	t_quaternion	conj;
 
-    conj.w = q.w;
-    conj.x = -q.x;
-    conj.y = -q.y;
-    conj.z = -q.z;
-    return (conj);
+	conj.w = q.w;
+	conj.x = -q.x;
+	conj.y = -q.y;
+	conj.z = -q.z;
+	return (conj);
 }

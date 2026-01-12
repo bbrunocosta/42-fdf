@@ -15,14 +15,14 @@
 
 t_quaternion	quat_normalize(t_quaternion q)
 {
-    double	len;
+	double	len;
 
 	len = sqrt(q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z);
-    if (len < 0.0001)
-        return (quat_identity());
-    q.w /= len;
-    q.x /= len;
-    q.y /= len;
-    q.z /= len;
-    return (q);
+	if (len < 0.0001)
+		return (quat_identity());
+	q.w /= len;
+	q.x /= len;
+	q.y /= len;
+	q.z /= len;
+	return (q);
 }

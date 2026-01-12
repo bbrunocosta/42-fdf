@@ -6,57 +6,56 @@
 /*   By: bcosta-b <bcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 00:00:00 by bcosta-b          #+#    #+#             */
-/*   Updated: 2026/01/05 18:20:02 by bcosta-b         ###   ########.fr       */
+/*   Updated: 2026/01/11 19:58:14 by bcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fdf.h"
 #include "mlx.h"
 
+static double	get_dist(t_vars *vars, t_radius_ctx *ctx,
+		unsigned int x, unsigned int y)
+{
+	double	dx;
+	double	dy;
+	double	dz;
+
+	dx = x - ctx->center_x;
+	dy = y - ctx->center_y;
+	dz = vars->point_map.points[y][x].z;
+	return (sqrt(dx * dx + dy * dy + dz * dz));
+}
+
 static double	calculate_max_radius(t_vars *vars)
 {
-	double		center_x;
-	double		center_y;
-	double		center_z;
-	double		max_radius;
-	double		dist;
-	double		dx;
-	double		dy;
-	double		dz;
+	t_radius_ctx	ctx;
 	unsigned int	y;
 	unsigned int	x;
+	double			dist;
 
-	center_x = (vars->point_map.width - 1) / 2.0;
-	center_y = (vars->point_map.height - 1) / 2.0;
-	center_z = 0;
-	max_radius = 0;
+	ctx.center_x = (vars->point_map.width - 1) / 2.0;
+	ctx.center_y = (vars->point_map.height - 1) / 2.0;
+	ctx.max_radius = 0;
 	y = 0;
 	while (y < vars->point_map.height)
 	{
 		x = 0;
 		while (x < vars->point_map.width)
 		{
-			dx = x - center_x;
-			dy = y - center_y;
-			dz = vars->point_map.points[y][x].z - center_z;
-			dist = sqrt(dx * dx + dy * dy + dz * dz);
-			if (dist > max_radius)
-				max_radius = dist;
+			dist = get_dist(vars, &ctx, x, y);
+			if (dist > ctx.max_radius)
+				ctx.max_radius = dist;
 			x++;
 		}
 		y++;
 	}
-	return (max_radius);
+	return (ctx.max_radius);
 }
 
-void	init_screen_size(t_vars *vars)
+static void	init_screen_dimensions(t_vars *vars)
 {
-	int		screen_w;
-	int		screen_h;
-	double	usable_width;
-	double	usable_height;
-	double	max_radius;
-	double	usable_size;
+	int	screen_w;
+	int	screen_h;
 
 	mlx_get_screen_size(vars->mlx, &screen_w, &screen_h);
 	if (screen_w > WINDOW_WIDTH)
@@ -65,9 +64,17 @@ void	init_screen_size(t_vars *vars)
 		screen_h = WINDOW_HEIGHT;
 	vars->screen.width = screen_w;
 	vars->screen.height = screen_h;
-	usable_width = vars->screen.width - (2 * MARGIN);
-	usable_height = vars->screen.height - (2 * MARGIN);
-	usable_size = (usable_width < usable_height) ? usable_width : usable_height;
+}
+
+void	init_screen_size(t_vars *vars)
+{
+	double	usable_size;
+	double	max_radius;
+
+	init_screen_dimensions(vars);
+	usable_size = vars->screen.width - (2 * MARGIN);
+	if (vars->screen.height - (2 * MARGIN) < usable_size)
+		usable_size = vars->screen.height - (2 * MARGIN);
 	max_radius = calculate_max_radius(vars);
 	if (max_radius == 0)
 		max_radius = 1;

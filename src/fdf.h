@@ -6,40 +6,40 @@
 /*   By: bcosta-b <bcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 19:17:46 by bcosta-b          #+#    #+#             */
-/*   Updated: 2026/01/05 18:20:00 by bcosta-b         ###   ########.fr       */
+/*   Updated: 2026/01/11 20:39:51 by bcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
 
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/time.h>
-#include <math.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <sys/time.h>
+# include <math.h>
 
-#define BUFFER_SIZE 1024
-#define M_PI 3.14159265358979323846
+# define BUFFER_SIZE 1024
+# define M_PI 3.14159265358979323846
 
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 800
-#define MARGIN 100
-#define ROTATION_STEP 0.08726646259971647
-#define ROTATION_DEBOUNCE_MS 150
+# define WINDOW_WIDTH 800
+# define WINDOW_HEIGHT 800
+# define MARGIN 100
+# define ROTATION_STEP 0.08726646259971647
+# define ROTATION_DEBOUNCE_MS 150
 
-#define KEY_ESC 65307
-#define KEY_LEFT 65361
-#define KEY_RIGHT 65363
-#define KEY_UP 65362
-#define KEY_DOWN 65364
-#define KEY_W 119
-#define KEY_S 115
-#define KEY_A 97
-#define KEY_D 100
-#define KEY_Q 113
-#define KEY_E 101
-#define KEY_PLUS 61
-#define KEY_MINUS 45
+# define KEY_ESC 65307
+# define KEY_LEFT 65361
+# define KEY_RIGHT 65363
+# define KEY_UP 65362
+# define KEY_DOWN 65364
+# define KEY_W 119
+# define KEY_S 115
+# define KEY_A 97
+# define KEY_D 100
+# define KEY_Q 113
+# define KEY_E 101
+# define KEY_PLUS 61
+# define KEY_MINUS 45
 
 typedef union u_color {
 	unsigned int	hex;
@@ -51,36 +51,37 @@ typedef union u_color {
 	};
 }	t_color;
 
-
-
-
-
-typedef struct s_point {
+typedef struct s_point
+{
 	double	x;
 	double	y;
 	double	z;
 	t_color	color;
 }	t_point;
 
-typedef struct s_quaternion {
-	double w;
-	double x;
-	double y;
-	double z;
+typedef struct s_quaternion
+{
+	double	w;
+	double	x;
+	double	y;
+	double	z;
 }	t_quaternion;
 
-typedef struct s_rotation {
-	double x;
-	double y;
-	double z;
+typedef struct s_rotation
+{
+	double	x;
+	double	y;
+	double	z;
 }	t_rotation;
 
-typedef struct s_translation {
-	double x;
-	double y;
+typedef struct s_translation
+{
+	double	x;
+	double	y;
 }	t_translation;
 
-typedef struct s_screen {
+typedef struct s_screen
+{
 	double	width;
 	double	height;
 	double	offset_x;
@@ -93,26 +94,55 @@ typedef struct s_screen {
 	int		endian;
 }	t_screen;
 
-typedef struct s_point_map {
+typedef struct s_point_map
+{
 	unsigned int	width;
 	unsigned int	height;
 	t_point			**points;
 }	t_point_map;
 
-typedef struct s_keys {
-	int w;
-	int s;
-	int a;
-	int d;
-	int q;
-	int e;
-	int up;
-	int down;
-	int left;
-	int right;
-	int plus;
-	int minus;
+typedef struct s_keys
+{
+	int	w;
+	int	s;
+	int	a;
+	int	d;
+	int	q;
+	int	e;
+	int	up;
+	int	down;
+	int	left;
+	int	right;
+	int	plus;
+	int	minus;
 }	t_keys;
+
+typedef struct s_line_ctx {
+	int	dx;
+	int	dy;
+	int	sx;
+	int	sy;
+	int	err;
+	int	x;
+	int	y;
+	int	end_x;
+	int	end_y;
+}	t_line_ctx;
+
+typedef struct s_render_ctx {
+	int		start_y;
+	int		end_y;
+	int		step_y;
+	int		start_x;
+	int		end_x;
+	int		step_x;
+}	t_render_ctx;
+
+typedef struct s_radius_ctx {
+	double	center_x;
+	double	center_y;
+	double	max_radius;
+}	t_radius_ctx;
 
 typedef struct s_vars {
 	void			*mlx;
@@ -130,16 +160,14 @@ typedef struct s_vars {
 	long			last_rotation_z_time;
 }	t_vars;
 
-
 t_point			quat_rotate_point(t_quaternion q, t_point p);
 t_quaternion	quat_multiply(t_quaternion q1, t_quaternion q2);
-void			quat_to_axes(t_quaternion q, double *x_axis, double *y_axis, double *z_axis);
 t_quaternion	quat_identity(void);
-t_quaternion	quat_from_axis_angle(double axis_x, double axis_y, double axis_z, double angle);
+t_quaternion	quat_from_axis_angle(double axis_x, double axis_y,
+					double axis_z, double angle);
 t_quaternion	quat_conjugate(t_quaternion q);
 t_quaternion	quat_normalize(t_quaternion q);
 
-int				count_char(const char *str, char c);
 int				count_tokens(const char *str);
 int				free_points(t_vars *vars);
 int				try_parse(t_vars *vars, char *map);
@@ -148,7 +176,6 @@ int				parse_map(t_vars *vars, char *filename);
 
 void			draw_line_optimized(t_vars *vars, t_point p1, t_point p2);
 void			put_pixel(t_vars *vars, int x, int y, t_color color);
-void			draw_line(t_vars *vars, t_point p1, t_point p2);
 void			render(t_vars *vars);
 int				is_visible(t_point p, t_vars *vars);
 
@@ -160,6 +187,10 @@ int				close_window(t_vars *vars);
 int				update_and_render(t_vars *vars);
 void			update_rotation(t_vars *vars, int *changed);
 void			update_rotation_x(t_vars *vars, int *changed);
+void			update_rotation_y(t_vars *vars,
+					int *changed, long current_time);
+void			update_rotation_z(t_vars *vars,
+					int *changed, long current_time);
 void			update_translation(t_vars *vars, int *changed);
 void			update_zoom(t_vars *vars, int *changed);
 

@@ -18,6 +18,8 @@ void	put_pixel(t_vars *vars, int x, int y, t_color color)
 
 	if (x < 0 || x >= vars->screen.width || y < 0 || y >= vars->screen.height)
 		return ;
-	dst = vars->screen.addr + (y * vars->screen.line_length + x * (vars->screen.bits_per_pixel / 8));
+	dst = vars->screen.addr + (
+			y * vars->screen.line_length
+			+ x * (vars->screen.bits_per_pixel / 8));
 	*(unsigned int *)dst = color.hex;
 }

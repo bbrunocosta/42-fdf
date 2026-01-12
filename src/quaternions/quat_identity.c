@@ -14,11 +14,11 @@
 
 t_quaternion	quat_identity(void)
 {
-    t_quaternion	q;
+	t_quaternion	q;
 
-    q.w = 1.0;
-    q.x = 0.0;
-    q.y = 0.0;
-    q.z = 0.0;
-    return (q);
+	q.w = 1.0;
+	q.x = 0.0;
+	q.y = 0.0;
+	q.z = 0.0;
+	return (q);
 }

@@ -6,7 +6,7 @@
 /*   By: bcosta-b <bcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 19:42:09 by bcosta-b          #+#    #+#             */
-/*   Updated: 2025/12/22 13:27:33 by bcosta-b         ###   ########.fr       */
+/*   Updated: 2026/01/11 19:30:53 by bcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ char	*read_file_to_string(int fd)
 	content = ft_strdup("");
 	if (!content)
 		return (NULL);
-	while ((bytes_read = read(fd, buffer, BUFFER_SIZE - 1)) > 0)
+	bytes_read = read(fd, buffer, BUFFER_SIZE - 1);
+	while (bytes_read > 0)
 	{
 		buffer[bytes_read] = '\0';
 		temp = ft_strjoin(content, buffer);
@@ -32,6 +33,7 @@ char	*read_file_to_string(int fd)
 		if (!temp)
 			return (NULL);
 		content = temp;
+		bytes_read = read(fd, buffer, BUFFER_SIZE - 1);
 	}
 	if (bytes_read < 0)
 	{

@@ -3,31 +3,24 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: brunocosta                                 +#+  +:+       +#+         #
+#    By: bcosta-b <bcosta-b@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/11/12                           #+#    #+#              #
-#    Updated: 2025/11/12                           ###   ########.fr        #
+#    Created: 2025/11/12 00:00:00 by                   #+#    #+#              #
+#    Updated: 2026/01/11 20:38:56 by bcosta-b         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# Nome do executável
 NAME = fdf
-
-# Compilador e flags
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
 INCLUDES = -I./src -I./minilibx-linux
-
-# Diretórios
 MLX_DIR = ./minilibx-linux
 SRC_DIR = src
 OBJ_DIR = obj
 
-# Arquivos fonte organizados por pasta
 SRCS = src/main.c \
        src/draw_line_optimized.c \
        src/free_points.c \
-       src/parser/count_char.c \
        src/parser/count_tokens.c \
        src/parser/read_file_to_string.c \
        src/parser/try_parse.c \
@@ -38,9 +31,7 @@ SRCS = src/main.c \
        src/quaternions/quat_multiply.c \
        src/quaternions/quat_normalize.c \
        src/quaternions/quat_rotate_point.c \
-       src/quaternions/quat_to_axes.c \
        src/rendering/put_pixel.c \
-       src/rendering/draw_line.c \
        src/rendering/render.c \
        src/rendering/is_visible.c \
        src/projection/project_iso.c \
@@ -50,6 +41,8 @@ SRCS = src/main.c \
        src/events/update_and_render.c \
        src/events/update_rotation.c \
        src/events/update_rotation_x.c \
+       src/events/update_rotation_y.c \
+       src/events/update_rotation_z.c \
        src/events/update_translation.c \
        src/events/update_zoom.c \
        src/init/init_screen_size.c \
@@ -65,67 +58,53 @@ SRCS = src/main.c \
        src/utils/ft_split.c \
        src/utils/ft_strjoin.c
 
-# Arquivos objeto
 OBJS = $(SRCS:src/%.c=$(OBJ_DIR)/%.o)
-
-# Biblioteca MiniLibX
 MLX = $(MLX_DIR)/libmlx.a
 MLX_FLAGS = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
 
-# Cores para output
 GREEN = \033[0;32m
 RED = \033[0;31m
 RESET = \033[0m
 
-# Regra principal
 all: $(NAME)
 
-# Compilar o executável
 $(NAME): $(MLX) $(OBJS)
-	@echo "$(GREEN)Compilando $(NAME)...$(RESET)"
+	@echo "$(GREEN)Compiling $(NAME)...$(RESET)"
 	@$(CC) $(CFLAGS) $(OBJS) $(MLX_FLAGS) -o $(NAME)
-	@echo "$(GREEN)✓ $(NAME) compilado com sucesso!$(RESET)"
+	@echo "$(GREEN)✓ $(NAME) compiled successfully!$(RESET)"
 
-# Compilar objetos
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(@D)
-	@echo "$(GREEN)Compilando $<...$(RESET)"
+	@echo "$(GREEN)Compiling $<...$(RESET)"
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-# Compilar MiniLibX
 $(MLX):
 	@if [ -f $(MLX_DIR)/Makefile ] || [ -f $(MLX_DIR)/Makefile.gen ]; then \
-		echo "$(GREEN)Compilando MiniLibX...$(RESET)"; \
+		echo "$(GREEN)Compiling MiniLibX...$(RESET)"; \
 		cd $(MLX_DIR) && ./configure > /dev/null 2>&1 || true; \
 		make -C $(MLX_DIR) -f Makefile.gen > /dev/null 2>&1 || make -C $(MLX_DIR) all > /dev/null 2>&1; \
-		echo "$(GREEN)✓ MiniLibX compilada!$(RESET)"; \
+		echo "$(GREEN)✓ MiniLibX compiled!$(RESET)"; \
 	else \
-		echo "$(RED)Aviso: MiniLibX não encontrada em $(MLX_DIR)$(RESET)"; \
+		echo "$(RED)Warning: MiniLibX not found in $(MLX_DIR)$(RESET)"; \
 	fi
 
-# Limpar objetos
 clean:
-	@echo "$(RED)Removendo objetos...$(RESET)"
+	@echo "$(RED)Removing objects...$(RESET)"
 	@rm -rf $(OBJ_DIR)
 	@make -C $(MLX_DIR) clean > /dev/null 2>&1 || true
-	@echo "$(RED)✓ Objetos removidos!$(RESET)"
+	@echo "$(RED)✓ Objects removed!$(RESET)"
 
-# Limpar tudo
 fclean: clean
-	@echo "$(RED)Removendo $(NAME)...$(RESET)"
+	@echo "$(RED)Removing $(NAME)...$(RESET)"
 	@rm -f $(NAME)
-	@echo "$(RED)✓ $(NAME) removido!$(RESET)"
+	@echo "$(RED)✓ $(NAME) removed!$(RESET)"
 
-# Recompilar tudo
 re: fclean all
 
-# Executar com mapa de teste
 test: all
 	@./$(NAME) test_maps/42.fdf
 
-# Verificar vazamentos de memória
 valgrind: all
 	@valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) test_maps/42.fdf
 
-# Phony targets
 .PHONY: all clean fclean re test valgrind

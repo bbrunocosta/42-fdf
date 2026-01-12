@@ -28,8 +28,10 @@ t_point	project_iso(t_point p, t_vars *vars)
 	quat_inv = quat_conjugate(vars->quat);
 	rotated = quat_rotate_point(quat_inv, centered);
 	scale = vars->screen.size * vars->zoom;
-	projected.x = vars->screen.offset_x + rotated.x * scale + vars->translation.x;
-	projected.y = vars->screen.offset_y + rotated.y * scale + vars->translation.y;
+	projected.x = vars->screen.offset_x + rotated.x
+		* scale + vars->translation.x;
+	projected.y = vars->screen.offset_y + rotated.y
+		* scale + vars->translation.y;
 	projected.z = rotated.z;
 	projected.color = p.color;
 	return (projected);
