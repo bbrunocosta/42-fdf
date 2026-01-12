@@ -6,39 +6,28 @@
 /*   By: bcosta-b <bcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 00:00:00 by bcosta-b          #+#    #+#             */
-/*   Updated: 2026/01/11 20:01:27 by bcosta-b         ###   ########.fr       */
+/*   Updated: 2026/01/11 21:22:15 by bcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fdf.h"
 
-static long	get_time_ms(void)
-{
-	struct timeval	tv;
-
-	gettimeofday(&tv, NULL);
-	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
-}
-
 void	update_rotation_x(t_vars *vars, int *changed)
 {
-	double	step;
-	long	current_time;
+	t_quaternion	delta;
 
-	step = ROTATION_STEP;
-	current_time = get_time_ms();
-	if (vars->keys.s
-		&& (current_time - vars->last_rotation_x_time) >= ROTATION_DEBOUNCE_MS)
+	if (vars->keys.w)
 	{
-		vars->rotation.x += step;
-		vars->last_rotation_x_time = current_time;
+		delta = quat_from_axis_angle(1, 0, 0, ROTATION_STEP);
+		vars->quat = quat_multiply(delta, vars->quat);
+		vars->quat = quat_normalize(vars->quat);
 		*changed = 1;
 	}
-	if (vars->keys.w
-		&& (current_time - vars->last_rotation_x_time) >= ROTATION_DEBOUNCE_MS)
+	if (vars->keys.s)
 	{
-		vars->rotation.x -= step;
-		vars->last_rotation_x_time = current_time;
+		delta = quat_from_axis_angle(1, 0, 0, -ROTATION_STEP);
+		vars->quat = quat_multiply(delta, vars->quat);
+		vars->quat = quat_normalize(vars->quat);
 		*changed = 1;
 	}
 }

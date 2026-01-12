@@ -6,7 +6,7 @@
 /*   By: bcosta-b <bcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 19:17:46 by bcosta-b          #+#    #+#             */
-/*   Updated: 2026/01/11 20:39:51 by bcosta-b         ###   ########.fr       */
+/*   Updated: 2026/01/11 21:28:11 by bcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include <stdlib.h>
 # include <unistd.h>
-# include <sys/time.h>
 # include <math.h>
 
 # define BUFFER_SIZE 1024
@@ -25,7 +24,6 @@
 # define WINDOW_HEIGHT 800
 # define MARGIN 100
 # define ROTATION_STEP 0.08726646259971647
-# define ROTATION_DEBOUNCE_MS 150
 
 # define KEY_ESC 65307
 # define KEY_LEFT 65361
@@ -66,13 +64,6 @@ typedef struct s_quaternion
 	double	y;
 	double	z;
 }	t_quaternion;
-
-typedef struct s_rotation
-{
-	double	x;
-	double	y;
-	double	z;
-}	t_rotation;
 
 typedef struct s_translation
 {
@@ -149,15 +140,11 @@ typedef struct s_vars {
 	void			*win;
 	t_screen		screen;
 	t_point_map		point_map;
-	t_rotation		rotation;
 	t_translation	translation;
 	t_keys			keys;
 	double			zoom;
 	t_quaternion	quat;
 	int				needs_render;
-	long			last_rotation_x_time;
-	long			last_rotation_y_time;
-	long			last_rotation_z_time;
 }	t_vars;
 
 t_point			quat_rotate_point(t_quaternion q, t_point p);
@@ -187,10 +174,8 @@ int				close_window(t_vars *vars);
 int				update_and_render(t_vars *vars);
 void			update_rotation(t_vars *vars, int *changed);
 void			update_rotation_x(t_vars *vars, int *changed);
-void			update_rotation_y(t_vars *vars,
-					int *changed, long current_time);
-void			update_rotation_z(t_vars *vars,
-					int *changed, long current_time);
+void			update_rotation_y(t_vars *vars, int *changed);
+void			update_rotation_z(t_vars *vars, int *changed);
 void			update_translation(t_vars *vars, int *changed);
 void			update_zoom(t_vars *vars, int *changed);
 
