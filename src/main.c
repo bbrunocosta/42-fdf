@@ -6,12 +6,32 @@
 /*   By: bcosta-b <bcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 00:00:00 by bcosta-b          #+#    #+#             */
-/*   Updated: 2026/01/11 22:53:53 by bcosta-b         ###   ########.fr       */
+/*   Updated: 2026/01/16 14:26:06 by bcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "mlx.h"
+
+static int	check_extension(const char *filename)
+{
+	int	len;
+
+	len = 0;
+	while (filename[len])
+		len++;
+	if (len < 4)
+		return (0);
+	if (filename[len - 4] != '.')
+		return (0);
+	if (filename[len - 3] != 'f')
+		return (0);
+	if (filename[len - 2] != 'd')
+		return (0);
+	if (filename[len - 1] != 'f')
+		return (0);
+	return (1);
+}
 
 int	main(int argc, char **argv)
 {
@@ -20,6 +40,11 @@ int	main(int argc, char **argv)
 	if (argc != 2)
 	{
 		ft_putstr_fd("usage: ./fdf <file.fdf>\n", 2);
+		return (1);
+	}
+	if (!check_extension(argv[1]))
+	{
+		ft_putstr_fd("Error: file must have .fdf extension\n", 2);
 		return (1);
 	}
 	ft_memset(&vars, 0, sizeof(t_vars));

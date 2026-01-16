@@ -6,7 +6,7 @@
 /*   By: bcosta-b <bcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/11 19:25:03 by bcosta-b          #+#    #+#             */
-/*   Updated: 2026/01/11 22:50:01 by bcosta-b         ###   ########.fr       */
+/*   Updated: 2026/01/16 14:26:08 by bcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,17 @@ static int	parse_line(char *line, t_point *points, unsigned int row,
 	{
 		if (!parse_point(tokens[col], &points[col], row, col))
 		{
-			i = 0;
+			i = col;
 			while (tokens[i])
 				free(tokens[i++]);
 			free(tokens);
 			return (0);
 		}
-		free(tokens[col]);
 		col++;
 	}
+	i = 0;
+	while (tokens[i])
+		free(tokens[i++]);
 	free(tokens);
 	return (col == expected_cols);
 }
@@ -115,6 +117,7 @@ int	try_parse(t_vars *vars, char *map)
 	vars->point_map.points = malloc((i + 1) * sizeof(t_point *));
 	if (!vars->point_map.points)
 		return (free_lines(lines), 0);
+	ft_memset(vars->point_map.points, 0, (i + 1) * sizeof(t_point *));
 	vars->point_map.height = 0;
 	vars->point_map.width = 0;
 	i = 0;
