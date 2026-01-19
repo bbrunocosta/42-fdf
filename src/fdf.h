@@ -6,7 +6,7 @@
 /*   By: bcosta-b <bcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 19:17:46 by bcosta-b          #+#    #+#             */
-/*   Updated: 2026/01/11 23:03:03 by bcosta-b         ###   ########.fr       */
+/*   Updated: 2026/01/18 22:17:01 by bcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,10 @@
 
 # define BUFFER_SIZE 1024
 # define M_PI 3.14159265358979323846
-# define DEG_TO_RAD (M_PI / 180.0)
 
 # define WINDOW_WIDTH 800
 # define WINDOW_HEIGHT 800
 # define MARGIN 100
-# define ROTATION_STEP (5.0 * DEG_TO_RAD)
 # define Z_SCALE_FACTOR 0.5
 
 # define KEY_ESC 65307
